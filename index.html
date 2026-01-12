@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Camera Permission</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    video, canvas { width: 100%; max-width: 320px; margin-top: 10px; }
+    button { padding: 10px 15px; margin: 10px; }
+  </style>
+</head>
+<body>
+
+<h2>Camera Access</h2>
+<p>
+By pressing “Start Camera”, you agree to allow camera access for taking a photo.
+</p>
+
+<button onclick="startCamera()">Start Camera</button><br>
+
+<video id="video" autoplay playsinline></video><br>
+
+<button onclick="takePhoto()">Take Photo</button><br>
+
+<canvas id="canvas"></canvas>
+
+<script>
+let stream;
+
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    document.getElementById('video').srcObject = stream;
+  } catch (e) {
+    alert("Camera access denied.");
+  }
+}
+
+function takePhoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.drawImage(video, 0, 0);
+}
+</script>
+
+</body>
+</html>
